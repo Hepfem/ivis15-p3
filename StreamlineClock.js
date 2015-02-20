@@ -2,9 +2,9 @@ var data_el;
 var data_vv;
 var data_kv;
 
-var data_el_coords;
-var data_vv_coords;
-var data_kv_coords;
+var data_el_coords = [];
+var data_vv_coords = [];
+var data_kv_coords = [];
 
 var dsv = d3.dsv(";", "text/plain");
 
@@ -29,5 +29,10 @@ function handleDataKv(data) {
 }
 
 function calculateDataCoordinates() {
-
+    for (var i = 0; i < 24; i++) {
+        
+        var angle = ((2*Math.PI)/24) * i;
+        
+        data_el_coords.push({"x": Math.cos(angle) * Number(data_el[i].Energy), "y": Math.sin(angle) * Number(data_el[i].Energy)});
+    }
 }
