@@ -6,12 +6,12 @@ var data_el_coords = [];
 var data_vv_coords = [];
 var data_kv_coords = [];
 
-var overall_scale = 1.5;
-var window_width = 800;
-var window_height = 800;
+var overall_scale = 1;
+var window_width = 1024;
+var window_height = 768;
 
-var scale = 40 * overall_scale;
-var scale_v = 650 * overall_scale;
+var scale = 30 * overall_scale;
+var scale_v = 600 * overall_scale;
 var offset = 120 * overall_scale;
 var offset_v = 1 * overall_scale;
 
