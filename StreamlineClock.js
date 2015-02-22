@@ -6,7 +6,8 @@ var data_el_coords = [];
 var data_vv_coords = [];
 var data_kv_coords = [];
 
-var scale = 150;
+var scale = 70;
+var offset = 120;
 
 var dsv = d3.dsv(";", "text/plain");
 
@@ -35,7 +36,8 @@ function calculateDataCoordinates() {
         
         var angle = ((2*Math.PI)/24) * i;
         
-        data_el_coords.push({"x": Math.cos(angle) * Number(data_el[i].Energy) * scale, "y": Math.sin(angle) * Number(data_el[i].Energy * scale)});
+        data_el_coords.push({"x": Math.cos(angle) * ((Number(data_el[i].Energy) * scale) + offset), "y": Math.sin(angle) * ((Number(data_el[i].Energy) * scale) + offset)});
+
     }
 
     drawClock();
@@ -52,7 +54,14 @@ function drawClock() {
                         .attr("d", pathFunction(data_el_coords))
                         .attr("stroke", "black")
                         .attr("stroke-width", 1)
-                        .attr("fill", "none");
+                        .attr("fill", "yellow");
+
+    var center = svg.append("circle")
+                        .attr("cx", 0)
+                        .attr("cy", 0)
+                        .attr("r", offset)
+                        .attr("stroke", "black")
+                        .attr("fill", "white");
 }
 
 var pathFunction = d3.svg.line().x(function(d) { return d.x; })
