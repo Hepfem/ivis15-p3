@@ -18,6 +18,7 @@ var dailyclock_cfg = {
 var color_el = "#FFB400";
 var color_vv = "#FF1300";
 var color_kv = "#04819E";
+var color_center = "#111111";
 
 var svg;
 
@@ -125,8 +126,8 @@ var StreamlineClock = function(data_el, data_vv, data_kv, cfg) {
                             .attr("cx", 0)
                             .attr("cy", 0)
                             .attr("r", cfg.offset)
-                            .attr("stroke", "black")
-                            .attr("fill", "black")
+                            .attr("stroke", color_center)
+                            .attr("fill", color_center)
                             .attr("id", "center-shape");
     }
 
