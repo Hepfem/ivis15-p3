@@ -1,14 +1,14 @@
-var raw_data_el;
-var raw_data_vv;
-var raw_data_kv;
+var daily_data_el;
+var daily_data_vv;
+var daily_data_kv;
 
-var overall_scale = 1;
+var overall_scale = 1.5;
 var window_width = 1200;
 var window_height = 768;
 
 var dailyclock_cfg = {
-                        cx: -350,
-                        cy: -100,
+                        cx: 0,
+                        cy: 0,
                         scale: 30 * overall_scale,
                         scale_v: 600 * overall_scale,
                         offset: 120 * overall_scale,
@@ -26,25 +26,26 @@ var dsv = d3.dsv(";", "text/plain");
 dsv("data/30-1001-EL-short.csv", handleDataEl);
 
 function handleDataEl(data) {
-    raw_data_el = data;
+    daily_data_el = data;
     
     dsv("data/30-1001-VV-short.csv", handleDataVv);
 }
 
 function handleDataVv(data) {
-    raw_data_vv = data;
+    daily_data_vv = data;
     
     dsv("data/30-1001-KV-short.csv", handleDataKv);
 }
 
 function handleDataKv(data) {
-    raw_data_kv = data;
+    daily_data_kv = data;
     
     //Draw the dashboard
     drawDashboard();
 }
 
 function drawDashboard() {
+    //Create svg element and transform coordinate system to place (0,0) in the center
     svg = d3.select("#chart").append("svg")
                                     .attr("width", window_width)
                                     .attr("height", window_height)
@@ -53,30 +54,31 @@ function drawDashboard() {
                                     .attr("id", "svg-element");
 
     //Create and draw a new clock with 24 increments for daily data
-    var dailyClock = new StreamlineClock(raw_data_el, raw_data_vv, raw_data_kv, dailyclock_cfg);
-    dailyClock.calculateDataCoordinates(24);
+    var dailyClock = new StreamlineClock(daily_data_el, daily_data_vv, daily_data_kv, dailyclock_cfg);
+    dailyClock.calculateDataCoordinates(0, 24);
     dailyClock.drawClock();
 }
-
+/*
+    A streamline clock for three types of data.
+*/
 var StreamlineClock = function(data_el, data_vv, data_kv, cfg) {
 
     var data_el_coords = [];
     var data_vv_coords = [];
     var data_kv_coords = [];
 
-    this.calculateDataCoordinates = function(increments) {
+    this.calculateDataCoordinates = function(start, increments) {
         for (var i = 0; i < increments; i++) {
             
             var angle = ((2*Math.PI)/increments) * i;
             
-            data_el_coords.push({"x": Math.cos(angle) * ((Number(data_el[i].Energy) * cfg.scale) + cfg.offset), "y": Math.sin(angle) * ((Number(data_el[i].Energy) * cfg.scale) + cfg.offset)});
-
+            data_el_coords.push({"x": Math.cos(angle) * ((Number(data_el[i].Energy) * cfg.scale) + cfg.offset), "y": Math.sin(angle) * ((Number(data_el[i+start].Energy) * cfg.scale) + cfg.offset)});
 
             //Water coordinates along the current angle's axis
-            var vv_value_x = (Math.cos(angle) * (Number(data_vv[i].Volume) * cfg.scale_v));
-            var vv_value_y = (Math.sin(angle) * (Number(data_vv[i].Volume) * cfg.scale_v));
-            var kv_value_x = (Math.cos(angle) * (Number(data_kv[i].Volume) * cfg.scale_v));
-            var kv_value_y = (Math.sin(angle) * (Number(data_kv[i].Volume) * cfg.scale_v));
+            var vv_value_x = (Math.cos(angle) * (Number(data_vv[i+start].Volume) * cfg.scale_v));
+            var vv_value_y = (Math.sin(angle) * (Number(data_vv[i+start].Volume) * cfg.scale_v));
+            var kv_value_x = (Math.cos(angle) * (Number(data_kv[i+start].Volume) * cfg.scale_v));
+            var kv_value_y = (Math.sin(angle) * (Number(data_kv[i+start].Volume) * cfg.scale_v));
 
             //Determine whether to apply positive or negative offset for water
             if (i > 0 && i < ((increments/4)+1)) { //Both x and y positive
@@ -97,7 +99,7 @@ var StreamlineClock = function(data_el, data_vv, data_kv, cfg) {
 
     this.drawClock = function() {
         var clock = svg.append("g")
-                    .attr("transform", "translate(" + cfg.cy + "," + cfg.cx + ")")
+                            .attr("transform", "translate(" + cfg.cy + "," + cfg.cx + ")")
         var shape_kv = clock.append("path")
                             .attr("d", pathFunction(data_kv_coords))
                             .attr("stroke", color_kv)
