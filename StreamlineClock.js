@@ -42,17 +42,17 @@ function calculateDataCoordinates() {
 
         //Determine whether to apply positive or negative offset forS water
         if (i > 0 && i < 7) { //Both x and y positive
-            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
-            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
+            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.sin(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.sin(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else if (i >= 7 && i < 13) { //Negative x, positive y
-            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
-            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
+            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.sin(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.sin(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else if ( i >= 13 && i < 19) { //Both x and y negative
-            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
-            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
+            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.sin(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.sin(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else { //Positive x, negative y
-            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
-            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
+            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.sin(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.sin(angle) * (Number(data_kv[i].Volume) * scale_v))});
         }
     }
 
