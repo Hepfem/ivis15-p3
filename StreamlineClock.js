@@ -7,9 +7,9 @@ var data_vv_coords = [];
 var data_kv_coords = [];
 
 var scale = 50;
-var scale_v = 500;
+var scale_v = 650;
 var offset = 120;
-var offset_v = 12;
+var offset_v = 1;
 
 var dsv = d3.dsv(";", "text/plain");
 
@@ -40,15 +40,19 @@ function calculateDataCoordinates() {
         
         data_el_coords.push({"x": Math.cos(angle) * ((Number(data_el[i].Energy) * scale) + offset), "y": Math.sin(angle) * ((Number(data_el[i].Energy) * scale) + offset)});
 
-        //Determine whether to apply positive or negative offset for warm water
+        //Determine whether to apply positive or negative offset forS water
         if (i > 0 && i < 7) { //Both x and y positive
             data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else if (i >= 7 && i < 13) { //Negative x, positive y
             data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else if ( i >= 13 && i < 19) { //Both x and y negative
             data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
         } else { //Positive x, negative y
             data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+            data_kv_coords.push({"x": data_vv_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v)), "y": data_vv_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_kv[i].Volume) * scale_v))});
         }
     }
 
@@ -57,10 +61,16 @@ function calculateDataCoordinates() {
 
 function drawClock() {
     var svg = d3.select("#chart").append("svg")
-                                .attr("width", 500)
-                                .attr("height", 500)
+                                .attr("width", 750)
+                                .attr("height", 750)
                                 .append("g")
                                 .attr("transform", "translate(250,250) rotate(-90)");;
+
+    var shape_kv = svg.append("path")
+                        .attr("d", pathFunction(data_kv_coords))
+                        .attr("stroke", "blue")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "blue");     
 
     var shape_vv = svg.append("path")
                         .attr("d", pathFunction(data_vv_coords))
