@@ -71,32 +71,37 @@ function drawClock() {
                                 .attr("width", 750)
                                 .attr("height", 750)
                                 .append("g")
-                                .attr("transform", "translate(250,250) rotate(-90)");
+                                .attr("transform", "translate(250,250) rotate(-90)")
+                                .attr("id", "svg-element");
 
     var shape_kv = svg.append("path")
                         .attr("d", pathFunction(data_kv_coords))
                         .attr("stroke", "blue")
                         .attr("stroke-width", 1)
-                        .attr("fill", "blue");     
+                        .attr("fill", "blue")
+                        .attr("id", "kv-shape");     
 
     var shape_vv = svg.append("path")
                         .attr("d", pathFunction(data_vv_coords))
                         .attr("stroke", "red")
                         .attr("stroke-width", 1)
-                        .attr("fill", "red");    
+                        .attr("fill", "red")
+                        .attr("id", "vv-shape");   
 
     var shape_el = svg.append("path")
                         .attr("d", pathFunction(data_el_coords))
                         .attr("stroke", "yellow")
                         .attr("stroke-width", 1)
-                        .attr("fill", "yellow");
+                        .attr("fill", "yellow")
+                        .attr("id", "el-shape");
 
     var center = svg.append("circle")
                         .attr("cx", 0)
                         .attr("cy", 0)
                         .attr("r", offset)
                         .attr("stroke", "white")
-                        .attr("fill", "white");
+                        .attr("fill", "white")
+                        .attr("id", "center-shape");
 }
 
 var pathFunction = d3.svg.line().x(function(d) { return d.x; })
