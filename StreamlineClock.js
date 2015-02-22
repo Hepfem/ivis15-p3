@@ -6,10 +6,18 @@ var data_el_coords = [];
 var data_vv_coords = [];
 var data_kv_coords = [];
 
-var scale = 40;
-var scale_v = 650;
-var offset = 120;
-var offset_v = 1;
+var overall_scale = 1.5;
+var window_width = 800;
+var window_height = 800;
+
+var scale = 40 * overall_scale;
+var scale_v = 650 * overall_scale;
+var offset = 120 * overall_scale;
+var offset_v = 1 * overall_scale;
+
+var color_el = "#FFB400";
+var color_vv = "#FF1300";
+var color_kv = "#04819E";
 
 var dsv = d3.dsv(";", "text/plain");
 
@@ -68,39 +76,39 @@ function calculateDataCoordinates() {
 
 function drawClock() {
     var svg = d3.select("#chart").append("svg")
-                                .attr("width", 750)
-                                .attr("height", 750)
+                                .attr("width", window_width)
+                                .attr("height", window_height)
                                 .append("g")
-                                .attr("transform", "translate(250,250) rotate(-90)")
+                                .attr("transform", "translate(" + window_width/2 + "," + window_height/2 + ") rotate(-90)")
                                 .attr("id", "svg-element");
 
     var shape_kv = svg.append("path")
                         .attr("d", pathFunction(data_kv_coords))
-                        .attr("stroke", "blue")
+                        .attr("stroke", color_kv)
                         .attr("stroke-width", 1)
-                        .attr("fill", "blue")
+                        .attr("fill", color_kv)
                         .attr("id", "kv-shape");     
 
     var shape_vv = svg.append("path")
                         .attr("d", pathFunction(data_vv_coords))
-                        .attr("stroke", "red")
+                        .attr("stroke", color_vv)
                         .attr("stroke-width", 1)
-                        .attr("fill", "red")
+                        .attr("fill", color_vv)
                         .attr("id", "vv-shape");   
 
     var shape_el = svg.append("path")
                         .attr("d", pathFunction(data_el_coords))
-                        .attr("stroke", "yellow")
+                        .attr("stroke", color_el)
                         .attr("stroke-width", 1)
-                        .attr("fill", "yellow")
+                        .attr("fill", color_el)
                         .attr("id", "el-shape");
 
     var center = svg.append("circle")
                         .attr("cx", 0)
                         .attr("cy", 0)
                         .attr("r", offset)
-                        .attr("stroke", "white")
-                        .attr("fill", "white")
+                        .attr("stroke", "black")
+                        .attr("fill", "black")
                         .attr("id", "center-shape");
 }
 
