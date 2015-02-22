@@ -6,8 +6,10 @@ var data_el_coords = [];
 var data_vv_coords = [];
 var data_kv_coords = [];
 
-var scale = 70;
+var scale = 50;
+var scale_v = 500;
 var offset = 120;
+var offset_v = 12;
 
 var dsv = d3.dsv(";", "text/plain");
 
@@ -38,6 +40,16 @@ function calculateDataCoordinates() {
         
         data_el_coords.push({"x": Math.cos(angle) * ((Number(data_el[i].Energy) * scale) + offset), "y": Math.sin(angle) * ((Number(data_el[i].Energy) * scale) + offset)});
 
+        //Determine whether to apply positive or negative offset for warm water
+        if (i > 0 && i < 7) { //Both x and y positive
+            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+        } else if (i >= 7 && i < 13) { //Negative x, positive y
+            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+        } else if ( i >= 13 && i < 19) { //Both x and y negative
+            data_vv_coords.push({"x": data_el_coords[i].x - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+        } else { //Positive x, negative y
+            data_vv_coords.push({"x": data_el_coords[i].x + offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v)), "y": data_el_coords[i].y - offset_v + (Math.cos(angle) * (Number(data_vv[i].Volume) * scale_v))});
+        }
     }
 
     drawClock();
@@ -50,9 +62,15 @@ function drawClock() {
                                 .append("g")
                                 .attr("transform", "translate(250,250) rotate(-90)");;
 
+    var shape_vv = svg.append("path")
+                        .attr("d", pathFunction(data_vv_coords))
+                        .attr("stroke", "red")
+                        .attr("stroke-width", 1)
+                        .attr("fill", "red");    
+
     var shape_el = svg.append("path")
                         .attr("d", pathFunction(data_el_coords))
-                        .attr("stroke", "black")
+                        .attr("stroke", "yellow")
                         .attr("stroke-width", 1)
                         .attr("fill", "yellow");
 
@@ -60,7 +78,7 @@ function drawClock() {
                         .attr("cx", 0)
                         .attr("cy", 0)
                         .attr("r", offset)
-                        .attr("stroke", "black")
+                        .attr("stroke", "white")
                         .attr("fill", "white");
 }
 
