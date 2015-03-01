@@ -68,6 +68,34 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
                             .attr("stroke", cfg.color_center)
                             .attr("fill", cfg.color_center)
                             .attr("id", "center-shape");
+							
+		var divider = clock.append("line")
+							.attr("x1", cfg.offset-(cfg.offset/1.4))
+							.attr("y1", 0)
+							.attr("x2", -cfg.offset+(cfg.offset/1.4))
+							.attr("y2", 0)
+							.attr("stroke", cfg.color_center_details)
+							.attr("stroke-width", 7);
+							
+		var text_am = clock.append("text")
+							.attr("x", cfg.offset-(cfg.offset/1.5))
+							.attr("y", (cfg.offset/16))
+							.text("am")
+							.attr("text-anchor", "middle")
+							.attr("font-family", "sans-serif")
+							.attr("font-size", (cfg.offset/3.5) + "px")
+							.attr("fill", cfg.color_center_details)
+							.attr("transform", "rotate(90)");
+							
+		var text_pm = clock.append("text")
+							.attr("x", -cfg.offset+(cfg.offset/1.5))
+							.attr("y", (cfg.offset/16))
+							.text("pm")
+							.attr("text-anchor", "middle")
+							.attr("font-family", "sans-serif")
+							.attr("font-size", (cfg.offset/3.5) + "px")
+							.attr("fill", cfg.color_center_details)
+							.attr("transform", "rotate(90)");
     }
 
     var pathFunction = d3.svg.line().x(function(d) { return d.x; })
