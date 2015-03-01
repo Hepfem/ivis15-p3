@@ -1,11 +1,54 @@
 svg {
     background-color: #111111;
 }
-
-#control {
-
+text {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
 }
 
-.slider {
+#control {
+	background-color: #111111;
 	width: 1200px;
+}
+
+#container {
+	background-color: #111111;
+	display: inline-block;
+	padding: 10px;
+}
+
+input[type='range']{
+	-webkit-appearance: none;
+	border-radius: 6px;
+	width: 1200px;
+	background-color: #202020;
+	outline: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	background-color: #888;
+	border: 1px solid #666;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.firefox input[type='range']::-moz-range-track{
+	-webkit-appearance: none;
+	border-radius: 6px;
+	width: 1200px;
+	background-color: #202020;
+	outline: none;
+}
+
+.firefox input[type='range']::-moz-range-thumb {
+	-webkit-appearance: none;
+	background-color: #888;
+	border: 1px solid #666;
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	cursor: pointer;
 }
