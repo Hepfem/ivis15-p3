@@ -70,7 +70,6 @@ function drawDashboard() {
 }
 
 function updateChart() {
-	console.log(this.value);
 	dailyClock.calculateDataCoordinates(this.value*24, 24);
 	dailyClock.update();
 }
