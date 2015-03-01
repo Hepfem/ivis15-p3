@@ -6,8 +6,17 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
     var data_el_coords = [];
     var data_vv_coords = [];
     var data_kv_coords = [];
+	
+	var shape_el;
+	var shape_vv;
+	var shape_kv;
 
     this.calculateDataCoordinates = function(start, increments) {
+		//Make sure coords arrays are empty before pushing new things
+		data_el_coords = [];
+		data_vv_coords = [];
+		data_kv_coords = [];
+		
         for (var i = 0; i < increments; i++) {
             
             var angle = ((2*Math.PI)/increments) * i;
@@ -40,21 +49,21 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
     this.drawClock = function() {
         var clock = svg.append("g")
                             .attr("transform", "translate(" + cfg.cy + "," + cfg.cx + ")")
-        var shape_kv = clock.append("path")
+        shape_kv = clock.append("path")
                             .attr("d", pathFunction(data_kv_coords))
                             .attr("stroke", cfg.color_kv)
                             .attr("stroke-width", 1)
                             .attr("fill", cfg.color_kv)
                             .attr("id", "kv-shape");     
 
-        var shape_vv = clock.append("path")
+        shape_vv = clock.append("path")
                             .attr("d", pathFunction(data_vv_coords))
                             .attr("stroke", cfg.color_vv)
                             .attr("stroke-width", 1)
                             .attr("fill", cfg.color_vv)
                             .attr("id", "vv-shape");   
 
-        var shape_el = clock.append("path")
+        shape_el = clock.append("path")
                             .attr("d", pathFunction(data_el_coords))
                             .attr("stroke", cfg.color_el)
                             .attr("stroke-width", 1)
@@ -97,6 +106,12 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
 							.attr("fill", cfg.color_center_details)
 							.attr("transform", "rotate(90)");
     }
+	
+	this.update = function() {
+		shape_kv.transition().duration(1000).attr("d", pathFunction(data_kv_coords));     
+        shape_vv.transition().duration(1000).attr("d", pathFunction(data_vv_coords))
+        shape_el.transition().duration(1000).attr("d", pathFunction(data_el_coords))
+	}
 
     var pathFunction = d3.svg.line().x(function(d) { return d.x; })
                                     .y(function(d) { return d.y; })
