@@ -10,8 +10,13 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
 	var shape_el;
 	var shape_vv;
 	var shape_kv;
+	var text_date;
+	
+	var current_day;
 
     this.calculateDataCoordinates = function(start, increments) {
+		current_day = start;
+		
 		//Make sure coords arrays are empty before pushing new things
 		data_el_coords = [];
 		data_vv_coords = [];
@@ -105,12 +110,23 @@ var StreamlineClock = function(svg, data_el, data_vv, data_kv, cfg) {
 							.attr("font-size", (cfg.offset/3.5) + "px")
 							.attr("fill", cfg.color_center_details)
 							.attr("transform", "rotate(90)");
+							
+		text_date = clock.append("text")
+							.attr("x", window_width/2-20)
+							.attr("y", window_height/2-30)
+							.text(data_el[current_day].Date)
+							.attr("text-anchor", "end")
+							.attr("font-family", "sans-serif")
+							.attr("font-size", (cfg.offset/3.2) + "px")
+							.attr("fill", cfg.color_center_details)
+							.attr("transform", "rotate(90)");
     }
 	
 	this.update = function() {
 		shape_kv.transition().duration(1000).attr("d", pathFunction(data_kv_coords));     
-        shape_vv.transition().duration(1000).attr("d", pathFunction(data_vv_coords))
-        shape_el.transition().duration(1000).attr("d", pathFunction(data_el_coords))
+        shape_vv.transition().duration(1000).attr("d", pathFunction(data_vv_coords));
+        shape_el.transition().duration(1000).attr("d", pathFunction(data_el_coords));
+		text_date.text(data_el[current_day].Date);		
 	}
 
     var pathFunction = d3.svg.line().x(function(d) { return d.x; })
